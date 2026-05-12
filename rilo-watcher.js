@@ -78,6 +78,46 @@
   let bootstrapDone = false;
   let bootstrapTimer = null;
   let treeObserver = null;
+
+  // Track Rilo's "Thinking..." indicator. When this transitions from visible
+  // to gone, Rilo has finished generating a response — fires a task-complete.
+  let thinkingVisible = false;
+  function isThinkingIndicator(el) {
+    if (!(el instanceof HTMLElement)) return false;
+    // Signature: an element whose text content begins with "Thinking" AND
+    // contains three sibling spans with animate-bounce (Rilo's loading dots).
+    const text = (el.textContent || "").trim();
+    if (!/^Thinking\b/i.test(text)) return false;
+    const bouncyDots = el.querySelectorAll('.animate-bounce, [class*="animate-bounce"]');
+    return bouncyDots.length >= 2;
+  }
+  function findThinkingIndicator() {
+    // Cheap query: find anything with at least one animate-bounce, then check siblings.
+    const candidates = document.querySelectorAll('.animate-bounce, [class*="animate-bounce"]');
+    for (const dot of candidates) {
+      // Walk up a couple of levels — Rilo's structure is dots > span > flex-row.
+      let el = dot.parentElement;
+      for (let depth = 0; el && depth < 4; depth++, el = el.parentElement) {
+        if (isThinkingIndicator(el)) return el;
+      }
+    }
+    return null;
+  }
+  function evaluateThinking() {
+    const present = !!findThinkingIndicator();
+    if (present === thinkingVisible) return;
+    const wasVisible = thinkingVisible;
+    thinkingVisible = present;
+    if (present) {
+      // Thinking appeared — Rilo is busy. Mark this so the Send detector trusts the next ready.
+      sawSendNotReadyOnce = true;
+      return;
+    }
+    // Thinking disappeared. If we previously saw it, that's a clean task-complete.
+    if (!wasVisible) return;          // never saw it; shouldn't happen but safe
+    if (!bootstrapDone) return;        // page-load artifact — skip
+    fireTaskComplete("dom:thinking-gone");
+  }
   let routeCheckInterval = null;
   let lastHref = location.href;
 
@@ -103,22 +143,36 @@
     if (!btn || btn === currentSendBtn) return;
     if (sendObserver) sendObserver.disconnect();
     currentSendBtn = btn;
-    lastSendReady = isSendReady(btn);
-    if (!lastSendReady) sawSendNotReadyOnce = true;
-    sendObserver = new MutationObserver(() => evaluateSend(btn));
+    // Don't reset lastSendReady when we get a new node — we want continuity across
+    // React's node swaps. We just observe whatever node is current for in-place
+    // class mutations.
+    sendObserver = new MutationObserver(() => evaluateSend());
     sendObserver.observe(btn, {
       attributes: true,
       attributeFilter: ["class", "disabled", "aria-disabled"]
     });
+    // Re-evaluate immediately in case the new node arrived already-ready
+    // after a busy period (e.g. React replaced the node mid-transition).
+    evaluateSend();
   }
 
-  function evaluateSend(btn) {
+  // State-based detector that survives React node swaps.
+  // We track ready-state by asking the document "is *any* send button ready right now",
+  // not by holding a reference to a specific node.
+  function evaluateSend() {
+    const btn = findSendButton();
+    if (!btn) return;
     const ready = isSendReady(btn);
     if (ready === lastSendReady) return;
     const wasReady = lastSendReady;
     lastSendReady = ready;
-    if (!ready) { sawSendNotReadyOnce = true; return; }
-    if (wasReady) return;
+    if (!ready) {
+      // Going busy. Mark that we've seen a busy state so we can trust the next ready transition.
+      sawSendNotReadyOnce = true;
+      return;
+    }
+    // Ready transition. We require having seen busy at least once to avoid firing on initial load.
+    if (wasReady === true) return; // shouldn't happen given the early-return above, but safe
     if (!sawSendNotReadyOnce) return;
     fireTaskComplete("dom:send-ready");
   }
@@ -137,7 +191,62 @@
     return false;
   }
 
+  // Track decision-card root panels we've already alerted on, to suppress
+  // re-fires when React re-renders the same card.
+  const seenDecisionCards = new WeakSet();
+
+  // Detect Rilo's decision-card pattern:
+  //   <div class="...rounded-xl border... shadow-md...">
+  //     ...one of:
+  //       - a primary violet action button (handled by isPrimaryActionButton)
+  //       - 3+ option rows each with a circular indicator + label
+  //   </div>
+  // This catches BOTH the button-style cards (VaultFlow "Start Designing") AND
+  // the radio-prompt cards (5 options, no commit button).
+  function isDecisionCard(el) {
+    if (!(el instanceof HTMLElement)) return false;
+    const cls = el.className;
+    if (typeof cls !== "string") return false;
+    // Outer panel signature: rounded-xl + border + shadow.
+    // We're permissive here — any of these visual markers count.
+    const looksLikePanel =
+      cls.includes("rounded-xl") &&
+      cls.includes("border") &&
+      (cls.includes("shadow-md") || cls.includes("shadow-sm") || cls.includes("shadow-lg"));
+    if (!looksLikePanel) return false;
+
+    // Must contain something interactive: either a primary violet button OR
+    // 3+ option rows with the circle-indicator pattern.
+    const violetBtn = el.querySelector('button.bg-violet-500, button[class*="bg-violet-500"]');
+    if (violetBtn && /hover:bg-violet-600/.test(violetBtn.className || "")) return true;
+
+    // Option rows: look for any element that contains a small rounded-full
+    // indicator AND sits inside a flex row inside this panel. 3+ such rows = decision card.
+    const indicatorRows = el.querySelectorAll('div.rounded-full.border-2, div[class*="rounded-full"][class*="border-2"]');
+    if (indicatorRows.length >= 3) return true;
+
+    return false;
+  }
+
+  function scanForDecisionCards(root) {
+    if (!root || !root.querySelectorAll) return;
+    // Look for any panel-shaped element. Cheap query.
+    const candidates = root.querySelectorAll('div[class*="rounded-xl"]');
+    for (const panel of candidates) {
+      if (seenDecisionCards.has(panel)) continue;
+      if (!isDecisionCard(panel)) continue;
+      seenDecisionCards.add(panel);
+      if (!bootstrapDone) continue;
+      // Compose a short reason string for debugging.
+      const violetBtn = panel.querySelector('button[class*="bg-violet-500"]');
+      const label = violetBtn ? (violetBtn.textContent || "").trim().slice(0, 30) : "radio-prompt";
+      fireTaskComplete("dom:decision-card:" + label);
+    }
+  }
+
   function scanForActionButtons(root) {
+    // Kept for backwards compatibility — also runs the broader card scanner.
+    scanForDecisionCards(root);
     if (!root || !root.querySelectorAll) return;
     const candidates = root.querySelectorAll("button");
     for (const btn of candidates) {
@@ -175,6 +284,12 @@
 
     treeObserver = new MutationObserver((mutations) => {
       attachSendObserver();
+      // Also re-evaluate Send button state on every tree mutation, in case
+      // React replaced the node entirely (which the per-node mutation observer can't see).
+      evaluateSend();
+      // Watch the Thinking indicator at the document level — its appearance/
+      // disappearance is the cleanest "Rilo busy/done" signal we have.
+      evaluateThinking();
       for (const m of mutations) {
         for (const node of m.addedNodes) {
           if (!(node instanceof HTMLElement)) continue;
@@ -186,6 +301,9 @@
     attachSendObserver();
     scanForActionButtons(document.body);
     watchTitle();
+    // Seed Thinking state from current DOM so a page-load mid-task is handled gracefully.
+    thinkingVisible = !!findThinkingIndicator();
+    if (thinkingVisible) sawSendNotReadyOnce = true;
     routeCheckInterval = setInterval(() => {
       if (location.href !== lastHref) {
         lastHref = location.href;
