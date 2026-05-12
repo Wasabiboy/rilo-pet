@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy Policy — Rilo Pet</title>
+  <meta name="description" content="Privacy policy for the Rilo Pet browser extension. The extension does not collect, transmit, or share any personal information." />
+  <style>
+    :root {
+      --bg: #0e1014;
+      --panel: #161a21;
+      --fg: #e7e9ee;
+      --muted: #98a0ad;
+      --accent: #a78bfa;
+      --rule: #232932;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+    body {
+      font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      padding: 48px 24px 96px;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      padding: 48px;
+    }
+    h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: -0.01em; }
+    h2 {
+      font-size: 18px;
+      margin-top: 36px;
+      margin-bottom: 12px;
+      color: var(--fg);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 8px;
+    }
+    h3 { font-size: 15px; margin-top: 24px; margin-bottom: 6px; color: var(--accent); }
+    p, li { color: var(--fg); }
+    .muted { color: var(--muted); font-size: 14px; }
+    code {
+      background: rgba(255,255,255,0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    a { color: var(--accent); }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--rule);
+      margin: 36px 0;
+    }
+    .tldr {
+      background: rgba(167, 139, 250, 0.08);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 24px 0;
+    }
+    .tldr strong { color: var(--accent); }
+    footer {
+      max-width: 720px;
+      margin: 24px auto 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 600px) {
+      body { padding: 24px 12px 64px; }
+      main { padding: 28px 22px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Privacy Policy — Rilo Pet</h1>
+    <p class="muted">Last updated: 12 May 2026</p>
+
+    <p>This privacy policy describes how the <strong>Rilo Pet</strong> browser extension ("the extension", "we", "us") handles information when you use it. The extension is published by <strong>Phil Wesley-Brown / Decoded Digital</strong> ("the developer").</p>
+
+    <p>This policy is written in plain English. If anything is unclear, email <a href="mailto:phil@wesley-brown.com">phil@wesley-brown.com</a>.</p>
+
+    <div class="tldr">
+      <strong>TL;DR.</strong> The extension does <strong>not</strong> collect, transmit, sell, or share any personal information. Everything the extension knows about you is stored locally in your own browser and never leaves your computer. There are no analytics, no trackers, no servers we operate, and no third-party services involved.
+    </div>
+
+    <h2>What the extension does</h2>
+    <p>Rilo Pet is a browser extension that:</p>
+    <ol>
+      <li>Displays a small floating icon on web pages.</li>
+      <li>Opens or focuses your <code>rilo.studio</code> tab when you click the icon.</li>
+      <li>Watches <code>rilo.studio</code> for signals that a task has finished (changes in the page's interface, or events published by <code>rilo.studio</code> itself if it supports the Rilo Companion Bridge).</li>
+      <li>Shows a desktop notification when a Rilo task is ready for your attention.</li>
+    </ol>
+    <p>That's everything. It does not interact with any other website's content beyond placing the floating icon on the screen.</p>
+
+    <h2>What information the extension accesses</h2>
+    <p>To do its job, the extension requests these browser permissions:</p>
+
+    <h3>tabs</h3>
+    <p>Used to find an existing <code>rilo.studio</code> tab anywhere across your browser windows, so clicking the icon focuses it instead of opening a duplicate. The extension reads tab URLs to find matches against <code>rilo.studio</code> only. <strong>Tab URLs are not stored, logged, or transmitted.</strong></p>
+
+    <h3>storage</h3>
+    <p>Used to remember your preferences in your browser's local storage. This includes the floating icon's position on screen, its size, your chosen detection mode (Auto / Bridge / DOM / Off), and whether notifications and the optional chime are enabled. <strong>This data never leaves your browser.</strong></p>
+
+    <h3>notifications</h3>
+    <p>Used to display desktop notifications when a Rilo task completes. The notification content is generated locally — for example, <em>"Rilo is ready — your task just finished."</em> No data is sent anywhere as part of showing a notification.</p>
+
+    <h3>Host permissions for rilo.studio</h3>
+    <p>Used to detect when a Rilo task completes. The extension's watcher script runs on <code>rilo.studio</code> pages and listens for visual or event-based completion signals. <strong>No data is read from <code>rilo.studio</code>, copied, or transmitted.</strong> The watcher only observes the state of specific UI elements to decide when to fire a local notification.</p>
+
+    <h3>Broad page access (&lt;all_urls&gt;)</h3>
+    <p>Used to display the floating icon on whatever page you're currently viewing. The icon is a self-contained UI element inserted into the page — the extension does not read any of the page's content, form data, cookies, or anything else. <strong>The only thing the extension does on non-rilo pages is render its own icon and listen for clicks on it.</strong></p>
+
+    <h2>What the extension does NOT do</h2>
+    <ul>
+      <li><strong>No data collection.</strong> The extension does not collect any personal information about you, your browsing history, or your activity on any website.</li>
+      <li><strong>No analytics.</strong> The extension does not include Google Analytics, Mixpanel, Amplitude, or any other usage tracking service.</li>
+      <li><strong>No third-party servers.</strong> The extension does not communicate with any external service, including any service operated by the developer. There is no backend.</li>
+      <li><strong>No telemetry.</strong> The extension does not "phone home" with usage metrics, error reports, or installation events.</li>
+      <li><strong>No content reading.</strong> The extension does not read the text, forms, passwords, or any other content on the pages where it appears.</li>
+      <li><strong>No reading of Rilo's data.</strong> The extension does not read your chat history, prompts, generated code, files, or any other data from <code>rilo.studio</code>. It only watches for UI state changes that indicate a task is complete.</li>
+      <li><strong>No advertising.</strong> The extension does not show ads, share data with advertisers, or participate in any advertising network.</li>
+      <li><strong>No selling of data.</strong> There is no data to sell; nothing is collected.</li>
+    </ul>
+
+    <h2>Local data stored</h2>
+    <p>The following items are stored using the browser's standard <code>chrome.storage.local</code> API, which keeps them on your computer and accessible only to this extension:</p>
+    <ul>
+      <li>The pet's position on screen (numeric pixel coordinates)</li>
+      <li>The pet's size preference (a number between 32 and 200)</li>
+      <li>Your selected detection mode ("auto", "bridge", "dom", or "off")</li>
+      <li>Whether OS notifications are enabled (true / false)</li>
+      <li>Whether the chime sound is enabled (true / false)</li>
+    </ul>
+    <p>You can clear this data at any time by removing the extension or by clearing your browser's local storage for the extension.</p>
+
+    <h2>Children's privacy</h2>
+    <p>The extension does not knowingly collect any data from anyone. It does not target children. It does not have an age gate because there is no data to gate.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If the extension ever changes its data practices, this policy will be updated and the change will be noted at the top of the page. Any change that would expand the data accessed or transmitted by the extension will be made clear in the Chrome Web Store listing's update notes.</p>
+
+    <h2>Contact</h2>
+    <p>Questions, concerns, or requests:</p>
+    <p>
+      <strong>Phil Wesley-Brown — Decoded Digital</strong><br />
+      Email: <a href="mailto:phil@wesley-brown.com">phil@wesley-brown.com</a>
+    </p>
+
+    <hr />
+
+    <p class="muted">This extension is a personal/professional project by Phil Wesley-Brown. It is not affiliated with, endorsed by, or sponsored by Rilo Studio or its creators. "Rilo" and "rilo.studio" are trademarks of their respective owners.</p>
+  </main>
+</body>
+</html>
