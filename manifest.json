@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Rilo Pet",
-  "version": "1.5.0",
-  "description": "Floating pet that opens or focuses rilo.studio and notifies you when Rilo is ready. Supports the optional Rilo Companion Bridge for first-party event hooks.",
+  "version": "1.5.1",
+  "description": "Floating companion that opens rilo.studio and pops a notification the moment Rilo finishes a task and is waiting on you.",
   "author": "Phil Wesley-Brown — Decoded Digital",
   "permissions": ["tabs", "storage", "notifications"],
   "host_permissions": [

@@ -2,6 +2,8 @@
 
 A 30-line, dependency-free JavaScript snippet that lets browser extensions integrate cleanly with Rilo.
 
+> 📖 **Looking for step-by-step integration instructions?** See [`INTEGRATION.md`](./INTEGRATION.md) — it has copy-pasteable code for typical Next.js streaming-chat apps, plus an FAQ. This README is the higher-level overview.
+
 ## What this enables
 
 External tools (notification systems, desktop pets, status bars, IDE plugins, productivity dashboards, etc.) can hook into Rilo's task lifecycle without scraping the DOM. The integration is:
