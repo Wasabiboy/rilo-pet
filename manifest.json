@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Rilo Pet",
+  "version": "1.5.0",
+  "description": "Floating pet that opens or focuses rilo.studio and notifies you when Rilo is ready. Supports the optional Rilo Companion Bridge for first-party event hooks.",
+  "author": "Phil Wesley-Brown — Decoded Digital",
+  "permissions": ["tabs", "storage", "notifications"],
+  "host_permissions": [
+    "*://rilo.studio/*",
+    "*://*.rilo.studio/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "exclude_matches": ["*://rilo.studio/*", "*://*.rilo.studio/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": ["*://rilo.studio/*", "*://*.rilo.studio/*"],
+      "js": ["rilo-watcher.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_title": "Rilo Pet — click to open rilo.studio",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["pet.webm", "pet-still.png", "pet.gif", "pet-default.svg", "chime.mp3"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

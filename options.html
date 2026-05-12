@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rilo Pet — Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Rilo Pet</h1>
+      <p class="sub">A small companion that opens <code>rilo.studio</code> — and pings you when a Rilo task finishes.</p>
+    </header>
+
+    <section>
+      <label for="size">Pet size: <span id="sizeValue">58</span>px</label>
+      <input type="range" id="size" min="32" max="160" step="2" value="58" />
+    </section>
+
+    <section>
+      <label for="detectionMode">Detection method</label>
+      <select id="detectionMode">
+        <option value="auto">Auto (use Rilo bridge if available, else watch the page)</option>
+        <option value="bridge">Bridge only (only fire when Rilo emits events)</option>
+        <option value="dom">DOM only (always watch the page, ignore bridge)</option>
+        <option value="off">Off (no notifications)</option>
+      </select>
+      <p class="hint">"Auto" is safest. Switch to "Bridge only" once the Rilo team ships the companion event hooks. Switch to "DOM only" if the bridge misbehaves.</p>
+    </section>
+
+    <section class="toggle-row">
+      <label class="toggle">
+        <input type="checkbox" id="notifyOS" checked />
+        <span>System notification when task finishes</span>
+      </label>
+      <p class="hint">Fires only when you're on another tab/app. The pet bubble always appears when you're in-browser.</p>
+    </section>
+
+    <section class="toggle-row">
+      <label class="toggle">
+        <input type="checkbox" id="chime" />
+        <span>Play chime when task finishes</span>
+      </label>
+      <p class="hint">Off by default. Requires <code>chime.mp3</code> in the extension folder.</p>
+    </section>
+
+    <section class="button-row">
+      <button id="testNotify" type="button" class="secondary">Test notification</button>
+      <button id="resetPos" type="button">Reset position</button>
+    </section>
+
+    <footer>
+      <p class="muted">
+        Detection runs on <code>rilo.studio</code> tabs only. The pet hides itself while you're on Rilo.
+      </p>
+    </footer>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

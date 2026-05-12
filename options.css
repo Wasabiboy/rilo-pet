@@ -1,0 +1,129 @@
+:root {
+  --bg: #0e1014;
+  --panel: #161a21;
+  --fg: #e7e9ee;
+  --muted: #8a8f9a;
+  --accent: #00e0c6;
+  --border: #232932;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px;
+  min-width: 360px;
+  font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+main {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+header .sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+section {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: 500;
+}
+
+#size {
+  accent-color: var(--accent);
+  width: 100%;
+}
+
+button {
+  background: var(--accent);
+  color: #00231f;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+}
+
+button:hover { filter: brightness(1.05); }
+
+.hint, .muted {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+footer p {
+  margin: 0;
+}
+
+code {
+  background: rgba(255,255,255,0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+
+.toggle-row { gap: 4px; }
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.toggle input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.button-row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+button.secondary:hover {
+  background: rgba(255, 255, 255, 0.04);
+  filter: none;
+}
+
+select {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 13px;
+  width: 100%;
+  cursor: pointer;
+}
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}

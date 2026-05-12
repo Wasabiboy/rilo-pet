@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" aria-hidden="true">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#1b2230"/>
+      <stop offset="100%" stop-color="#0a0d13"/>
+    </radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00e0c6"/>
+      <stop offset="100%" stop-color="#0070ff"/>
+    </linearGradient>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#9bffe9" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#00e0c6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#00e0c6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Soft shadow under the pet -->
+  <ellipse cx="64" cy="116" rx="32" ry="5" fill="#000" opacity="0.35">
+    <animate attributeName="rx" values="32;28;32" dur="2.4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.35;0.25;0.35" dur="2.4s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- Floating body group -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+      values="0 0; 0 -4; 0 0" dur="2.4s" repeatCount="indefinite"/>
+
+    <!-- Outer rim -->
+    <circle cx="64" cy="60" r="44" fill="url(#rim)"/>
+    <!-- Inner body -->
+    <circle cx="64" cy="60" r="40" fill="url(#bg)"/>
+
+    <!-- Eyes -->
+    <g>
+      <circle cx="50" cy="58" r="9" fill="url(#eyeGlow)"/>
+      <circle cx="78" cy="58" r="9" fill="url(#eyeGlow)"/>
+      <circle cx="50" cy="58" r="3.2" fill="#0a0d13">
+        <animate attributeName="r" values="3.2;0.6;3.2;3.2" keyTimes="0;0.05;0.1;1" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="78" cy="58" r="3.2" fill="#0a0d13">
+        <animate attributeName="r" values="3.2;0.6;3.2;3.2" keyTimes="0;0.05;0.1;1" dur="4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Smile -->
+    <path d="M50 78 Q64 90 78 78" stroke="#00e0c6" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+    <!-- Antenna -->
+    <line x1="64" y1="20" x2="64" y2="10" stroke="#00e0c6" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="64" cy="9" r="3" fill="#00e0c6">
+      <animate attributeName="r" values="3;4;3" dur="1.2s" repeatCount="indefinite"/>
+      <animate attributeName="fill-opacity" values="1;0.6;1" dur="1.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
