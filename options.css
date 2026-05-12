@@ -5,6 +5,7 @@
   --muted: #8a8f9a;
   --accent: #00e0c6;
   --border: #232932;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -122,6 +123,18 @@ select {
   font-size: 13px;
   width: 100%;
   cursor: pointer;
+  /* Tell the browser this widget should use dark color scheme,
+     which makes Chrome render the dropdown popup in dark too. */
+  color-scheme: dark;
+}
+select option {
+  background-color: #161a21;
+  color: var(--fg);
+}
+select option:checked,
+select option:hover {
+  background-color: #2a3140;
+  color: var(--fg);
 }
 select:focus {
   outline: 2px solid var(--accent);

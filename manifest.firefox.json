@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Rilo Pet",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "Floating companion that opens rilo.studio and pops a notification the moment Rilo finishes a task and is waiting on you.",
   "author": "Phil Wesley-Brown — Decoded Digital",
   "permissions": ["tabs", "storage", "notifications"],

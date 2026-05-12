@@ -6,6 +6,7 @@ A floating browser companion icon for [rilo.studio](https://rilo.studio) that **
 
 ## What's new in 1.5.x
 
+- **v1.5.6** — Fixed the Detection method dropdown: options now render in dark theme to match the options panel (was showing white background by default).
 - **v1.5.5** — New toolbar/store icons generated from the real pet mascot (was using the placeholder geometric icon from v1.0). Added 32×32 variant for crisper rendering at common menu sizes.
 - **v1.5.4** — Added "Thinking…" indicator detection. When Rilo's loading bubble disappears, that's now treated as a definitive task-complete signal — the most reliable of all detection paths.
 - **v1.5.3** — Send-button detection rewritten to survive React DOM-node replacement (was missing transitions when Rilo's UI swapped the button node mid-render).
